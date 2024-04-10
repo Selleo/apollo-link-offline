@@ -1,6 +1,6 @@
 import { ApolloLink, Observable, gql } from "@apollo/client";
 import debounce from "lodash/debounce";
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 
 const syncStatusQuery = gql`
   query syncStatus {
@@ -13,13 +13,13 @@ export default class OfflineLink extends ApolloLink {
   /**
    * storage
    * Provider that will persist the mutation queue. This can be any AsyncStorage compatible storage instance.
-   * 
+   *
    * retryInterval
    * Milliseconds between attempts to retry failed mutations. Defaults to 30,000 milliseconds.
-   * 
+   *
    * sequential
    * Indicates if the attempts should be retried in order. Defaults to false which retries all failed mutations in parallel.
-   * 
+   *
    * retryOnServerError
    * Indicates if mutations should be reattempted if there are server side errors, useful to retry mutations on session expiration. Defaults to false.
    */
@@ -184,7 +184,7 @@ export default class OfflineLink extends ApolloLink {
    */
   add(item) {
     // We give the mutation attempt a random id so that it is easy to remove when needed (in sync loop)
-    const attemptId = uuidv4();
+    const attemptId = uuid.v4();
 
     this.queue.set(attemptId, item);
 
